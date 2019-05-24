@@ -5,9 +5,11 @@ import com.vaadin.navigator.View;
 import com.vaadin.ui.*;
 
 import static com.vaadin.ui.Alignment.*;
+import static ru.alfastrah.prototype.MyUI.PRIVATE_OFFICE_VIEW;
 
 class RegistrationView extends VerticalLayout implements View {
     RegistrationView(Navigator navigator) {
+        this.navigator = navigator;
         buildLayout(navigator);
     }
 
