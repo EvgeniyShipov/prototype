@@ -10,6 +10,7 @@ import static ru.alfastrah.prototype.MyUI.PRIVATE_OFFICE_VIEW;
 class RegistrationView extends VerticalLayout implements View {
     RegistrationView(Navigator navigator) {
         this.navigator = navigator;
+        emailSender = new EmailSender();
         buildLayout(navigator);
     }
 

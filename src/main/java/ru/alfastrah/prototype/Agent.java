@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Data
-public class Agent {
+class Agent {
     private static final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
     private Date startDate;
     private String FIO;
@@ -19,7 +19,7 @@ public class Agent {
     private final BigDecimal sumValue = new BigDecimal(Math.round(Math.random() * 1000_000));
     private String statusOk = Math.round(Math.random() * 3) % 2 == 0 ? "Все хорошо" : "Обратить внимание";
 
-    public String getStringStartDate(){
+    String getStringStartDate(){
         return format.format(startDate);
     }
 

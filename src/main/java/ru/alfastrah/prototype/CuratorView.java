@@ -8,10 +8,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.components.grid.GridSelectionModel;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static com.vaadin.ui.Alignment.MIDDLE_CENTER;
 import static ru.alfastrah.prototype.Agent.Status.NEW;
@@ -25,17 +22,23 @@ class CuratorView extends VerticalLayout implements View {
 
     private Navigator navigator;
 
+    private List<Agent> newAgents;
+    private List<Agent> inProgressAgents;
+    private List<Agent> realAgents;
+
     private void buildLayout(Navigator navigator) {
         setSpacing(true);
         this.navigator = navigator;
 
         Label curatorLabel = new Label("Кабинет куратора");
 
-        List<Agent> inProgressAgents = Arrays.asList(getInProgressGoodAgent(), getInProgressBadAgent());
+        newAgents = new ArrayList<>(Arrays.asList(getNewAgent()));
+        inProgressAgents = new ArrayList<>(Arrays.asList(getInProgressBadAgent()));
+        realAgents = new ArrayList<>(Arrays.asList(getStateAgent()));
 
-        Grid<Agent> newAgentsGrid = getNewAgnetsGrid(Collections.singletonList(getNewAgent()));
+        Grid<Agent> newAgentsGrid = getNewAgnetsGrid(newAgents);
         Grid<Agent> inProgressAgentsGrid = getInProgressAgentsGrid(inProgressAgents);
-        Grid<Agent> stateAgents = getStateAgents(Collections.singletonList(getStateAgent()));
+        Grid<Agent> stateAgents = getStateAgents(realAgents);
         Label newApplicationLabel = new Label("Новые заявки");
         Label inProgressApplicationLabel = new Label("Заявки в работе");
         Label stateApplicationLabel = new Label("Мои агенты");
@@ -44,7 +47,6 @@ class CuratorView extends VerticalLayout implements View {
                 inProgressApplicationLabel, inProgressAgentsGrid, stateApplicationLabel, stateAgents);
         setComponentAlignment(curatorLabel, MIDDLE_CENTER);
 
-        GridSelectionModel<Agent> selectionModel = inProgressAgentsGrid.getSelectionModel();
         inProgressAgentsGrid.setSelectionMode(Grid.SelectionMode.MULTI);
 
         inProgressAgents.stream()
@@ -84,7 +86,7 @@ class CuratorView extends VerticalLayout implements View {
         grid.setHeight(150, Unit.PIXELS);
 
         grid.addItemClickListener(event -> {
-            navigator.addView(NEW_AGENT_VIEW, new NewAgentView(navigator, event.getItem()));
+            navigator.addView(NEW_AGENT_VIEW, new NewAgentView(navigator, event.getItem(), newAgents, inProgressAgents));
             navigator.navigateTo(NEW_AGENT_VIEW);
         });
 
@@ -109,6 +111,7 @@ class CuratorView extends VerticalLayout implements View {
         agent.setPhone("+7(495)123-45-67");
         agent.setStartDate(new Date());
         agent.setStatus(NEW);
+        agent.setStatusOk("Все хорошо");
         agent.setValue(new BigDecimal(1_500_000L));
         return agent;
     }

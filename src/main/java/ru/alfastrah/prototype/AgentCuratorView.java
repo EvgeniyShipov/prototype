@@ -6,9 +6,11 @@ import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.*;
 
 import static com.vaadin.ui.Alignment.*;
+import static ru.alfastrah.prototype.MyUI.CURATOR_VIEW;
 
 public class AgentCuratorView extends VerticalLayout implements View {
     private Agent agent;
+
 
     AgentCuratorView(Navigator navigator, Agent agent) {
         this.agent = agent;
@@ -25,7 +27,6 @@ public class AgentCuratorView extends VerticalLayout implements View {
         Label labelPhone = new Label("Телефон агента: " + agent.getPhone());
         Label labelSumValue = new Label("Текущий портфель: " + agent.getSumValue().toString() + " руб.");
 
-
         HorizontalLayout buttonsLayout = new HorizontalLayout();
         Button accessButtom = new Button("Дать тестовый доступ в АП",
                 event -> Notification.show("Доступ предоставлен!"));
@@ -39,7 +40,13 @@ public class AgentCuratorView extends VerticalLayout implements View {
                     event -> Notification.show("Все необходимые люди наказаны!"));
             buttonsLayout.addComponents(buttom2, buttom3);
         }
-        addComponents(labelFIO, labelStatus, labelPhone, labelSumValue, buttonsLayout);
+
+        Button backButton = new Button("Назад",
+                event -> navigator.navigateTo(CURATOR_VIEW));
+
+        addComponents(labelFIO, labelStatus, labelPhone, labelSumValue, buttonsLayout, backButton);
+
+        setComponentAlignment(backButton, Alignment.BOTTOM_LEFT);
 
         setComponentAlignment(labelFIO, MIDDLE_LEFT);
     }
